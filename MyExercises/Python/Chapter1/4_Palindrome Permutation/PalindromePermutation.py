@@ -41,7 +41,8 @@ class Test(unittest.TestCase):
         ('Random Words', False),
         ('Not a Palindrome', False),
         ('no x in nixon', True),
-        ('azAZ', True)]
+        ('azAZ', True),
+        ('SsssDddDdbbbb   kkaaaAAAa', False)]
 
     def test_pal_perm(self):
         for [test_string, expected] in self.data:

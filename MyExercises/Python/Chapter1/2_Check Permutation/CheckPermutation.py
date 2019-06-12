@@ -16,6 +16,13 @@ def check_permutation(str1, str2):
     return True
 
 
+def check2(str1, str2):
+    if len(str1) != len(str2):
+        return False
+    result = Counter(str1) - Counter(str2)
+    return not result
+
+
 class Test(unittest.TestCase):
     dataT = (
         ('abcd', 'bacd'),
@@ -37,6 +44,17 @@ class Test(unittest.TestCase):
         for test_strings in self.dataF:
             result = check_permutation(*test_strings)
             self.assertFalse(result)
+
+    def test_2(self):
+        # true check
+        for test_strings in self.dataT:
+            result = check2(*test_strings)
+            self.assertTrue(result)
+        # false check
+        for test_strings in self.dataF:
+            result = check2(*test_strings)
+            self.assertFalse(result)
+
 
 
 if __name__ == "__main__":

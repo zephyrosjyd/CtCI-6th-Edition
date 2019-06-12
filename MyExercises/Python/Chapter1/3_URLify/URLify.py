@@ -16,7 +16,8 @@ def urlify(string, length):
             string[new_index - 1] = string[i]
             new_index -= 1
 
-    return string
+    return string[new_index:]
+    # return string
 
 
 class Test(unittest.TestCase):
@@ -25,7 +26,7 @@ class Test(unittest.TestCase):
     data = [
         (list('much ado about nothing      '), 22,
          list('much%20ado%20about%20nothing')),
-        (list('Mr John Smith    '), 13, list('Mr%20John%20Smith'))]
+        (list('Mr John Smith      '), 13, list('Mr%20John%20Smith'))]
 
     def test_urlify(self):
         for [test_string, length, expected] in self.data:

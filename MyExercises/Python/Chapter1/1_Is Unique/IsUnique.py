@@ -18,6 +18,15 @@ def unique(string):
     return True
 
 
+def unique2(string):
+    char_dict = {}
+    for char in string:
+        if char in char_dict:
+            return False
+        char_dict[char] = 1
+    return True
+
+
 class Test(unittest.TestCase):
     dataT = [('abcd'), ('s4fad'), ('')]
     dataF = [('23ds2'), ('hb 627jh=j ()')]
@@ -30,6 +39,16 @@ class Test(unittest.TestCase):
         # false check
         for test_string in self.dataF:
             actual = unique(test_string)
+            self.assertFalse(actual)
+
+    def test_unique2(self):
+        # true check
+        for test_string in self.dataT:
+            actual = unique2(test_string)
+            self.assertTrue(actual)
+        # false check
+        for test_string in self.dataF:
+            actual = unique2(test_string)
             self.assertFalse(actual)
 
 if __name__ == "__main__":

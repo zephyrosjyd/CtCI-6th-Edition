@@ -19,6 +19,15 @@ def string_compression(string):
     return min(string, ''.join(compressed), key=len)
 
 
+def compression(string):
+    from collections import Counter
+    counter = Counter(string)
+    if len(counter) *2 >= len(string):
+        return string
+    result = [k + str(counter[k]) for k in counter]
+    return ''.join(result)
+
+
 class Test(unittest.TestCase):
     '''Test Cases'''
     data = [
@@ -29,6 +38,11 @@ class Test(unittest.TestCase):
     def test_string_compression(self):
         for [test_string, expected] in self.data:
             actual = string_compression(test_string)
+            self.assertEqual(actual, expected)
+
+    def test_string_compression2(self):
+        for [test_string, expected] in self.data:
+            actual = compression(test_string)
             self.assertEqual(actual, expected)
 
 if __name__ == "__main__":
