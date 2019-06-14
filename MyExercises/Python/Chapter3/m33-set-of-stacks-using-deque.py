@@ -1,4 +1,5 @@
 import unittest
+from collections import deque 
 import random
 
 
@@ -15,58 +16,33 @@ class Node:
 class Stack:
     def __init__(self, capacity):
         self.cap = capacity
-        self.head = None
-        self.tail = None
-        self.size = 0
+        self.struct = deque()
 
     def __str__(self):
-        n, s = self.head, ''
-        while n:
-            s += '{} '.format(str(n))
-            n = n.next
-        return s
+        return ' '.join([str(x) for x in self.struct])
 
     def push(self, value):
         if self.full():
             raise RuntimeError('Stack is full.')
-        n = Node(value)
-        self.size += 1
-        if self.size == 1:
-            self.head = self.tail = n
-        else:
-            n.next = self.head
-            self.head.prev = n
-            self.head = n
+        self.struct.append(Node(value))
 
     def pop(self):
         if self.empty():
             raise RuntimeError('Stack is empty.')
-        n = self.head
-        self.size -= 1
-        if self.size == 0:
-            self.head = self.tail = None
-        else:
-            self.head = n.next
-            self.head.prev = None
+        n = self.struct.pop()
         return n.value
 
     def remove(self):
         if self.empty():
             raise RuntimeError('Stack is empty.')
-        n = self.tail
-        self.size -= 1
-        if self.size == 0:
-            self.head = self.tail = None
-        else:
-            self.tail = n.prev
-            self.tail.next = None
+        n = self.struct.popleft()
         return n.value
 
     def empty(self):
-        return self.size == 0
+        return len(self.struct) == 0
 
     def full(self):
-        return self.size == self.cap
+        return len(self.struct) == self.cap
 
 
 class SetOfStack:
@@ -75,7 +51,7 @@ class SetOfStack:
         self.stacks = []
 
     def __str__(self):
-        return '| '.join([str(s) for s in self.stacks])
+        return ' | '.join([str(s) for s in self.stacks])
 
     def push(self, value):
         if self.empty():
@@ -127,22 +103,21 @@ class MyTestCase(unittest.TestCase):
 
     def test_stringify(self):
         stack = Stack(3)
-        n = stack.head = Node(0)
-        for i in range(1, 3):
-            n.next = Node(i)
-            n = n.next
-        self.assertEqual(str(stack), '0 -> 1 -> 2 -> ')
+        stack.struct.append(Node(0))
+        stack.struct.append(Node(1))
+        stack.struct.append(Node(2))
+        self.assertEqual(str(stack), '0 -> 1 -> 2 ->')
 
         ss = SetOfStack(2)
         ss.stacks.append(stack)
         ss.stacks.append(stack)
-        self.assertEqual(str(ss), '0 -> 1 -> 2 -> | 0 -> 1 -> 2 -> ')
+        self.assertEqual(str(ss), '0 -> 1 -> 2 -> | 0 -> 1 -> 2 ->')
 
     def test_push(self):
         ss = SetOfStack(3)
         for i in range(3):
             ss.push(i)
-        self.assertEqual(str(ss), '2 -> 1 -> 0 -> ')
+        self.assertEqual(str(ss), '0 -> 1 -> 2 ->')
 
     def test_pop(self):
         ss = SetOfStack(5)
